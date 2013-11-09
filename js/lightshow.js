@@ -1,16 +1,15 @@
 require(['$api/audio', '$api/models'], function(audio, models) {
-  var bands     = audio.BAND31;
+  var bands    = audio.BAND10;
   var numBands = bands.length;
-  var analyzer = audio.BufferAnalyzer.forPlayer(models.player);
+  var analyzer = audio.RealtimeAnalyzer.forPlayer(models.player, bands);
   document.getElementById("output").innerHTML = "";
-  
+  console.log(audio.BAND10);
   analyzer.addEventListener('audio', function(evt) {
-	var text = "Data:";
-	console.log(evt.deadline.getMilliseconds());
-    text = evt.deadline.getHours() + ":" 
-						+ evt.deadline.getMinutes() + ":" 
-						+ evt.deadline.getSeconds() + "." 
-						+ evt.deadline.getMilliseconds();
-	document.getElementById("output").innerHTML = text;
+	if (evt.audio.spectrum.left[1] > 0) {
+		document.getElementById("output").innerHTML="BOOM";
+	}
+	else {
+		document.getElementById("output").innerHTML="";
+	}
   });
 });
