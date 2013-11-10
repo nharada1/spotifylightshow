@@ -140,23 +140,31 @@ function getAudioAnalysis(title, artist){
               var aheadDiff = aheadAverage - currVal[1];
               var behindDiff = behindAverage - currVal[1];
               //console.log('ahead dif: ' + aheadDiff + ' behindDif: ' + behindDiff + ' nodeVal: ' + currVal[1] + ' pint: ' + pointsOfInterest[b]);
-              if(behindDiff < -1.5){
-                //console.log('almost certain build at ' + currVal[0]);
-              }
-              if( (behindDiff < 0) ){
+              var node = [];
+              var type = '';
+              if(behindDiff < -2 && (aheadDiff > -0.5)){
+                console.log('almost certain build at ' + currVal[0]);
+                node = maxInRange(meanLoudness, currVal[0], currVal[0] + 2)[0];
+                type = 'drop';
+              } else if( (behindDiff < 0) ){
                 // if( Math.abs(aheadDiff) < 0.5) {
                 //   console.log(' very possible drop at ' + currVal[0]);
                 // }
-                if( aheadDiff > 0.5){
-                  //console.log(' very possible build at ' + currVal[0]);
-                }
-				var drop = {'type': 'drop', 'time': currVal[0]};
-               drops.push(drop);
-
-            }
+               } else if( aheadDiff > 0.5){
+                  console.log(' very possible build at ' + currVal[0]);
+                node = maxInRange(meanLoudness, currVal[0], currVal[0] + 2)[0];
+                type = 'drop';
+              } else if( (aheadDiff < 0 && behindDiff > 0)){
+                console.log('verse');
+                node = currVal[0];
+                type = 'verse';
+              }
+              if(node !== undefined && node.length > 0){
+                drops.push({'type': type, 'time': node[0]});
+              }
           }
           dropList(drops);
-		  return 0;
+          return 0;
           function coorelateDSets(segs1, segs2, rangePos, rangeNeg){
 
 
