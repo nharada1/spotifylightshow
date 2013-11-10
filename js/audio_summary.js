@@ -408,7 +408,7 @@ function calcMeanLoudness(segments){
 // }
 
 function addSegment(song_data, series, timbre){
-  // var chart = $('#container').highcharts();
+  var chart = $('#container').highcharts();
   var segments = song_data.segments;
   var movingAverage = 10;
 
@@ -424,7 +424,8 @@ function addSegment(song_data, series, timbre){
     var seg = [ time, meanTimbre];
     data.push(seg);
   }
-  // chart.series[series].setData(data);
+  chart.series[series].setData(data);
+  chart.redraw();
   return data;
 }
 

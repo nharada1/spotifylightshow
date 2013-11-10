@@ -12,11 +12,12 @@ require(['$api/audio', '$api/models'], function(audio, models) {
   var socket = io.connect('http://localhost:3001'); 
   var startTime = null;
   var deltaSecs = 0;
-  
+
+	
   document.getElementById("boom").innerHTML = "";
   console.log(audio.BAND10);
   
-  getAudioAnalysis('scary', 'skrillex');
+  
   
   analyzer.addEventListener('audio', function(evt) {
 
@@ -44,7 +45,6 @@ require(['$api/audio', '$api/models'], function(audio, models) {
 		if (listODrops) {
 			for (var i=0; i<listODrops.length; i++) {
 				if (deltaSecs > listODrops[i].time) {
-					console.log(listODrops[i].time);
 					if (listODrops[i].type == "drop") currentState = DROP;
 					if (listODrops[i].type == "verse") currentState = VERSE;
 				}
@@ -54,10 +54,22 @@ require(['$api/audio', '$api/models'], function(audio, models) {
 	
   });
   models.player.addEventListener('change', function(evt) {
-	models.player.load('playing').done(function(track) {
+	currentState = VERSE;
+	socket.emit('VERSE');
+	models.player.load('playing', 'position').done(function(track) {
 		if (models.player.playing) {
 			startTime = new Date();
+			startTime.setTime(startTime.getTime() - models.player.position);
 		}
+		  
+	models.player.load('track').done(function(track) {
+		models.player.track.load('name', 'artists').done(function(track) {
+				var trackname = models.player.track.name;
+				var artist = models.player.track.artists[0].name;
+				getAudioAnalysis(trackname, artist);
+				$('#container').highcharts().redraw();
+			});
+		});
 	});
   });
 });
