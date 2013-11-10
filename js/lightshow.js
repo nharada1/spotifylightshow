@@ -5,6 +5,7 @@ require(['$api/audio', '$api/models'], function(audio, models) {
   
   var socket = io.connect('http://localhost:3001'); 
   var startTime = null;
+  var listODrops = null;
   
   document.getElementById("output").innerHTML = "";
   console.log(audio.BAND10);
@@ -28,6 +29,9 @@ require(['$api/audio', '$api/models'], function(audio, models) {
 		}
 	});
   });
-  drops = getAudioAnalysis('scary', 'skrillex');
-  console.log(drops);
+  getAudioAnalysis('scary', 'skrillex');
 });
+
+function dropList(drops){
+ console.log(drops);
+}
