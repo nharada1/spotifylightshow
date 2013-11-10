@@ -130,37 +130,39 @@ function getAudioAnalysis(title, artist){
           console.log(pointsOfInterest);
           for(var b = 0; b < pointsOfInterest.length; b++)
           {
-            var segs = segmentsInRange(meanLoudness, pointsOfInterest[b][0][0], (pointsOfInterest[b][0][0] + 3));
-            // console.log(pointsOfInterest[b][0][0] + ' ' + (pointsOfInterest[b][0] + 3));
-            // console.log(segs);
-              var aheadAverage = averageSegments(segmentsInRange(meanLoudness, pointsOfInterest[b][0][0], pointsOfInterest[b][0][0] + 5));
-              var behindAverage = averageSegments(segmentsInRange(meanLoudness, pointsOfInterest[b][0][0] - 5, pointsOfInterest[b][0][0]));
-              var currVal = segmentsInRange(meanLoudness, pointsOfInterest[b][0][0] - 0.5, pointsOfInterest[b][0][0] + 0.5)[0];
-              // console.log('ahead avg: ' + aheadAverage + ' behindAverage: ' + behindAverage + ' nodeVal: ' + currVal[1] + ' pint: ' + pointsOfInterest[b]);
-              var aheadDiff = aheadAverage - currVal[1];
-              var behindDiff = behindAverage - currVal[1];
-              //console.log('ahead dif: ' + aheadDiff + ' behindDif: ' + behindDiff + ' nodeVal: ' + currVal[1] + ' pint: ' + pointsOfInterest[b]);
-              var node = [];
-              var type = '';
-              if(behindDiff < -2 && (aheadDiff > -0.5)){
-                console.log('almost certain build at ' + currVal[0]);
-                node = maxInRange(meanLoudness, currVal[0], currVal[0] + 2)[0];
-                type = 'drop';
-              } else if( (behindDiff < 0) ){
-                // if( Math.abs(aheadDiff) < 0.5) {
-                //   console.log(' very possible drop at ' + currVal[0]);
-                // }
-               } else if( aheadDiff > 0.5){
-                  console.log(' very possible build at ' + currVal[0]);
-                node = maxInRange(meanLoudness, currVal[0], currVal[0] + 2)[0];
-                type = 'drop';
-              } else if( (aheadDiff < 0 && behindDiff > 0)){
-                console.log('verse');
-                node = currVal[0];
-                type = 'verse';
-              }
-              if(node !== undefined && node.length > 0){
-                drops.push({'type': type, 'time': node[0]});
+            if(pointsOfInterest[b][0] !== undefined){
+              var segs = segmentsInRange(meanLoudness, pointsOfInterest[b][0][0], (pointsOfInterest[b][0][0] + 3));
+              // console.log(pointsOfInterest[b][0][0] + ' ' + (pointsOfInterest[b][0] + 3));
+              // console.log(segs);
+                var aheadAverage = averageSegments(segmentsInRange(meanLoudness, pointsOfInterest[b][0][0], pointsOfInterest[b][0][0] + 5));
+                var behindAverage = averageSegments(segmentsInRange(meanLoudness, pointsOfInterest[b][0][0] - 5, pointsOfInterest[b][0][0]));
+                var currVal = segmentsInRange(meanLoudness, pointsOfInterest[b][0][0] - 0.5, pointsOfInterest[b][0][0] + 0.5)[0];
+                // console.log('ahead avg: ' + aheadAverage + ' behindAverage: ' + behindAverage + ' nodeVal: ' + currVal[1] + ' pint: ' + pointsOfInterest[b]);
+                var aheadDiff = aheadAverage - currVal[1];
+                var behindDiff = behindAverage - currVal[1];
+                console.log('ahead dif: ' + aheadDiff + ' behindDif: ' + behindDiff + ' nodeVal: ' + currVal[1] + ' pint: ' + pointsOfInterest[b]);
+                var node = [];
+                var type = '';
+                if(behindDiff < -2 && (aheadDiff > 0.5)){
+                  console.log('almost certain build at ' + currVal[0]);
+                  node = maxInRange(meanLoudness, currVal[0], currVal[0] + 2)[0];
+                  type = 'drop';
+                } else if( (behindDiff < 0) ){
+                  // if( Math.abs(aheadDiff) < 0.5) {
+                  //   console.log(' very possible drop at ' + currVal[0]);
+                  // }
+                 } else if( aheadDiff > 0.5){
+                    console.log(' very possible build at ' + currVal[0]);
+                  node = maxInRange(meanLoudness, currVal[0], currVal[0] + 2)[0];
+                  type = 'drop';
+                } else if( (aheadDiff < -0.5)){
+                  console.log('verse');
+                  node = currVal;
+                  type = 'verse';
+                }
+                if(node !== undefined && node.length > 0){
+                  drops.push({'type': type, 'time': node[0]});
+                }
               }
           }
           dropList(drops);
