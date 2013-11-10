@@ -142,7 +142,6 @@ function getAudioAnalysis(title, artist){
               console.log('ahead dif: ' + aheadDiff + ' behindDif: ' + behindDiff + ' nodeVal: ' + currVal[1] + ' pint: ' + pointsOfInterest[b]);
               if(behindDiff < -1.5){
                 console.log('almost certain build at ' + currVal[0]);
-                drops.push({type: 'drop', time: currVal[0]});
               }
               if( (behindDiff < 0) ){
                 // if( Math.abs(aheadDiff) < 0.5) {
@@ -151,6 +150,8 @@ function getAudioAnalysis(title, artist){
                 if( aheadDiff > 0.5){
                   console.log(' very possible build at ' + currVal[0]);
                 }
+               drops.push({'type': 'drop', 'time': currVal[0]});
+
             }
           }
           return drops;
