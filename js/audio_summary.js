@@ -143,7 +143,7 @@ function getAudioAnalysis(title, artist){
                 console.log('ahead dif: ' + aheadDiff + ' behindDif: ' + behindDiff + ' nodeVal: ' + currVal[1] + ' pint: ' + pointsOfInterest[b]);
                 var node = [];
                 var type = '';
-                if(behindDiff < -2 && (aheadDiff > 0.5)){
+                if(behindDiff < -2 && (aheadDiff > (-0.3))){
                   console.log('almost certain build at ' + currVal[0]);
                   node = maxInRange(meanLoudness, currVal[0], currVal[0] + 2)[0];
                   type = 'drop';
