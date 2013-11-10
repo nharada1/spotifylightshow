@@ -28,4 +28,6 @@ require(['$api/audio', '$api/models'], function(audio, models) {
 		}
 	});
   });
+  drops = getAudioAnalysis('scary', 'skrillex');
+  console.log(drops);
 });
