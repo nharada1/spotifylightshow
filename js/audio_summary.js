@@ -142,6 +142,7 @@ function getAudioAnalysis(title, artist){
               console.log('ahead dif: ' + aheadDiff + ' behindDif: ' + behindDiff + ' nodeVal: ' + currVal[1] + ' pint: ' + pointsOfInterest[b]);
               if(behindDiff < -1.5){
                 console.log('almost certain build at ' + currVal[0]);
+                drops.push({type: 'drop', time: currVal[0]});
               }
               if( (behindDiff < 0) ){
                 // if( Math.abs(aheadDiff) < 0.5) {
@@ -151,8 +152,8 @@ function getAudioAnalysis(title, artist){
                   console.log(' very possible build at ' + currVal[0]);
                 }
             }
-
           }
+          return drops;
 
           function coorelateDSets(segs1, segs2, rangePos, rangeNeg){
 
@@ -225,7 +226,7 @@ function getAudioAnalysis(title, artist){
 }
 
 function cleanArray(actual){
-  var newArray = new Array();
+  var newArray = new Array[];
   for(var i = 0; i<actual.length; i++){
       if (actual[i]){
         newArray.push(actual[i]);
@@ -395,7 +396,7 @@ function calcMeanLoudness(segments){
 // }
 
 function addSegment(song_data, series, timbre){
-  var chart = $('#container').highcharts();
+  // var chart = $('#container').highcharts();
   var segments = song_data.segments;
   var movingAverage = 10;
 
@@ -411,12 +412,12 @@ function addSegment(song_data, series, timbre){
     var seg = [ time, meanTimbre];
     data.push(seg);
   }
-  chart.series[series].setData(data);
+  // chart.series[series].setData(data);
   return data;
 }
 
 function addLoudMax(song_data){
-  var chart = $('#container').highcharts();
+  // var chart = $('#container').highcharts();
   var segments = song_data.segments;
   //var movingAverage = 10;
 
@@ -432,12 +433,12 @@ function addLoudMax(song_data){
     var seg = [time, pitch];
     data.push(seg);
   }
-  chart.series[8].setData(data);
+  // chart.series[8].setData(data);
   return data;
 }
 
 function addPitches(song_data){
-  var chart = $('#container').highcharts();
+  // var chart = $('#container').highcharts();
   var segments = song_data.segments;
   //var movingAverage = 10;
 
@@ -453,12 +454,12 @@ function addPitches(song_data){
     var seg = [time, pitch];
     data.push(seg);
   }
-  chart.series[9].setData(data);
+  // chart.series[9].setData(data);
   return data;
 }
 
 function graphDerivative(segAttributes, series){
-  var chart = $('#container').highcharts();
+  // var chart = $('#container').highcharts();
   var movingAverage = 10;
   var data = [];
 
@@ -473,12 +474,12 @@ function graphDerivative(segAttributes, series){
     var seg = [segAttributes[i - (movingAverage / 2)][0], meanD * 10];
     data.push(seg);
   }
-  chart.series[series].setData(data);
+  // chart.series[series].setData(data);
   return data;
 }
 
 function addSection(song_data){
-  var chart = $('#container').highcharts();
+  // var chart = $('#container').highcharts();
   var sections = song_data.sections;
   var data = [];
   data.push([0, 1]);
@@ -487,6 +488,7 @@ function addSection(song_data){
     data.push([total, sections[j].confidence]);
     // console.log([total, sections[i].confidence]);
   }
-  chart.series[10].setData(data);
+  // chart.series[10].setData(data);
 }
+
 
